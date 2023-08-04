@@ -76,6 +76,7 @@ export default function Reactions() {
                       key={reaction.id}
                       className={`absolute animate-reaction`}
                       style={{
+                        // Sets transform: rotate();
                         "--starting-angle": `${reaction.startingAngle}deg`,
                         animationTimingFunction: reaction.curve,
                       }}
