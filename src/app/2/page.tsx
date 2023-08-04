@@ -1,3 +1,4 @@
+// @ts-nocheck
 "use client";
 
 import { generateRandomId } from "@/lib/utils";
@@ -37,11 +38,11 @@ export default function Reactions() {
             }}
           >
             {display}
-            <div aria-live="polite" role="log">
+            <div aria-live="polite" role="log" aria-atomic>
               <div className="sr-only">
                 {reactions.length} {label} reactions
               </div>
-              <div>
+              <div aria-hidden>
                 {reactions.map((reaction) => {
                   return <div key={reaction.id}>{display}</div>;
                 })}
