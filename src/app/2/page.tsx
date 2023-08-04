@@ -1,5 +1,6 @@
 "use client";
 
+import { generateRandomId } from "@/lib/utils";
 import { useState } from "react";
 
 const REACTIONS = [
@@ -10,7 +11,7 @@ const REACTIONS = [
 ];
 
 export default function Reactions() {
-  const [reactions, setReactions] = useState([]);
+  const [allReactions, setAllReactions] = useState([]);
 
   return (
     <aside
@@ -19,16 +20,32 @@ export default function Reactions() {
       aria-label="Live stream reactions"
     >
       {REACTIONS.map(({ display, label }) => {
+        const reactions = allReactions.filter(
+          (reaction) => reaction.label === label
+        );
+
         return (
           <button
             key={label}
             aria-label={`${label} reaction`}
             className="w-10 h-10"
+            onClick={() => {
+              setAllReactions((prev) => [
+                ...prev,
+                { id: generateRandomId(), label },
+              ]);
+            }}
           >
             {display}
             <div aria-live="polite" role="log">
-              <div className="sr-only"></div>
-              <div></div>
+              <div className="sr-only">
+                {reactions.length} {label} reactions
+              </div>
+              <div>
+                {reactions.map((reaction) => {
+                  return <div key={reaction.id}>{display}</div>;
+                })}
+              </div>
             </div>
           </button>
         );
