@@ -14,17 +14,15 @@ export default function Reactions() {
       role="group"
       aria-label="Live stream reactions"
     >
-      {REACTIONS.map(({ display, label }) => {
-        return (
-          <button
-            key={label}
-            aria-label={`${label} reaction`}
-            className="w-10 h-10"
-          >
-            {display}
-          </button>
-        );
-      })}
+      {REACTIONS.map(({ display, label }) => (
+        <button
+          key={label}
+          aria-label={`${label} reaction`}
+          className="w-10 h-10"
+        >
+          {display}
+        </button>
+      ))}
     </aside>
   );
 }
