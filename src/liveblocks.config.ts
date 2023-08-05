@@ -11,10 +11,19 @@ type Storage = {};
 
 type UserMeta = {};
 
-type RoomEvent = {
-  type: "react";
-  emoji: string;
-};
+type RoomEvent =
+  | {
+      type: "react";
+      emoji: string;
+    }
+  | {
+      type: "reaction";
+      emoji: string;
+      emojiId: string;
+    }
+  | {
+      type: "finish";
+    };
 
 export const {
   suspense: {
