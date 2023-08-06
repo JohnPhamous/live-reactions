@@ -1,4 +1,4 @@
-import { createClient } from "@liveblocks/client";
+import { LiveObject, createClient } from "@liveblocks/client";
 import { createRoomContext } from "@liveblocks/react";
 
 const client = createClient({
@@ -7,7 +7,14 @@ const client = createClient({
 
 type Presence = {};
 
-type Storage = {};
+type Storage = {
+  reactions: LiveObject<{
+    fire: number;
+    heart: number;
+    octopus: number;
+    clap: number;
+  }>;
+};
 
 type UserMeta = {};
 

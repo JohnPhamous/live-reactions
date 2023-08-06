@@ -4,7 +4,9 @@ import {
   RoomProvider,
   useBroadcastEvent,
   useEventListener,
+  useMutation,
 } from "@/liveblocks.config";
+import { LiveObject } from "@liveblocks/client";
 import { useState } from "react";
 
 const REACTIONS = [
@@ -36,7 +38,18 @@ const REACTIONS = [
 
 export default function Home() {
   return (
-    <RoomProvider id="seattlejs-conf-audience" initialPresence={{}}>
+    <RoomProvider
+      id="seattlejs-conf-audience"
+      initialPresence={{}}
+      initialStorage={{
+        reactions: new LiveObject({
+          fire: 0,
+          heart: 0,
+          octopus: 0,
+          clap: 0,
+        }),
+      }}
+    >
       <Component />
     </RoomProvider>
   );
@@ -59,6 +72,13 @@ const Component = () => {
     }
   });
 
+  const updateCount = useMutation(({ storage }, type: string) => {
+    // @ts-expect-error
+    const previousCount = storage.get("reactions").get(type);
+    // @ts-expect-error
+    storage.get("reactions").set(type, previousCount + 1);
+  }, []);
+
   return (
     <>
       {mode === "presenting" ? (
@@ -78,6 +98,7 @@ const Component = () => {
                     // @ts-expect-error
                     [reaction.label]: prev[reaction.label] + 1,
                   }));
+                  updateCount(reaction.label);
                   broadcast({
                     type: "reaction",
                     emoji: reaction.display,
