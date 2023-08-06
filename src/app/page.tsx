@@ -6,7 +6,7 @@ import {
   useEventListener,
   useMutation,
 } from "@/liveblocks.config";
-import { LiveObject } from "@liveblocks/client";
+import { LiveList, LiveObject } from "@liveblocks/client";
 import { useState } from "react";
 
 const REACTIONS = [
@@ -42,12 +42,10 @@ export default function Home() {
       id="seattlejs-conf-audience"
       initialPresence={{}}
       initialStorage={{
-        reactions: new LiveObject({
-          fire: 0,
-          heart: 0,
-          octopus: 0,
-          clap: 0,
-        }),
+        fireReactions: new LiveList([]),
+        heartReactions: new LiveList([]),
+        octopusReactions: new LiveList([]),
+        clapReactions: new LiveList([]),
       }}
     >
       <Component />
@@ -73,10 +71,9 @@ const Component = () => {
   });
 
   const updateCount = useMutation(({ storage }, type: string) => {
+    const key = `${type}Reactions`;
     // @ts-expect-error
-    const previousCount = storage.get("reactions").get(type);
-    // @ts-expect-error
-    storage.get("reactions").set(type, previousCount + 1);
+    storage.get(key).push({ id: new Date().getTime().toString() });
   }, []);
 
   return (
