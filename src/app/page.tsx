@@ -23,14 +23,14 @@ const REACTIONS = [
   {
     label: "octopus",
     display: "🐙",
-    color: "bg-cyan-500",
-    active: "active:bg-cyan-600",
+    color: "bg-green-500",
+    active: "active:bg-green-600",
   },
   {
     label: "clap",
     display: "👏️",
-    color: "bg-purple-500",
-    active: "active:bg-purple-600",
+    color: "bg-pink-500",
+    active: "active:bg-pink-600",
   },
 ];
 
