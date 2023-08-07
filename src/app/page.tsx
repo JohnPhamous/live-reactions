@@ -5,8 +5,9 @@ import {
   useBroadcastEvent,
   useEventListener,
   useMutation,
+  useStorage,
 } from "@/liveblocks.config";
-import { LiveList, LiveObject } from "@liveblocks/client";
+import { LiveList } from "@liveblocks/client";
 import { useState } from "react";
 
 const REACTIONS = [
@@ -46,6 +47,7 @@ export default function Home() {
         heartReactions: new LiveList([]),
         octopusReactions: new LiveList([]),
         clapReactions: new LiveList([]),
+        mode: "presenting",
       }}
     >
       <Component />
@@ -54,21 +56,20 @@ export default function Home() {
 }
 
 const Component = () => {
-  const [mode, setMode] = useState<"presenting" | "finished">("presenting");
   const [counts, setCounts] = useState({
     fire: 0,
     heart: 0,
     octopus: 0,
     clap: 0,
   });
+  const mode = useStorage((root) => root.mode);
+  const fireReactions = useStorage((root) => root.fireReactions.length);
+  const heartReactions = useStorage((root) => root.heartReactions.length);
+  const octopusReactions = useStorage((root) => root.octopusReactions.length);
+  const clapReactions = useStorage((root) => root.clapReactions.length);
+  console.log(counts["fire"] / fireReactions);
 
   const broadcast = useBroadcastEvent();
-
-  useEventListener(({ event }) => {
-    if (event.type === "finish") {
-      setMode("finished");
-    }
-  });
 
   const updateCount = useMutation(({ storage }, type: string) => {
     const key = `${type}Reactions`;
@@ -163,10 +164,23 @@ const Component = () => {
                   Your Stats
                 </p>
                 <div className="text-2xl text-white">
-                  <p>🔥 {counts["fire"]}</p>
-                  <p>❤️ {counts["heart"]}</p>
-                  <p>🐙 {counts["octopus"]}</p>
-                  <p>👏 {counts["clap"]}</p>
+                  <p>
+                    🔥 {counts["fire"]} (
+                    {((counts["fire"] / fireReactions) * 100).toFixed(0)}%)
+                  </p>
+                  <p>
+                    ❤️ {counts["heart"]} (
+                    {((counts["heart"] / heartReactions) * 100).toFixed(0)}%)
+                  </p>
+                  <p>
+                    🐙 {counts["octopus"]} (
+                    {((counts["octopus"] / octopusReactions) * 100).toFixed(0)}
+                    %)
+                  </p>
+                  <p>
+                    👏 {counts["clap"]} (
+                    {((counts["clap"] / clapReactions) * 100).toFixed(0)}%)
+                  </p>
                 </div>
 
                 <h2 className="mt-10 mb-2 text-2xl font-bold tracking-tight text-white sm:text-2xl">

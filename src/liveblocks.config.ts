@@ -12,6 +12,7 @@ type Storage = {
   heartReactions: LiveList<{ id: string }>;
   octopusReactions: LiveList<{ id: string }>;
   clapReactions: LiveList<{ id: string }>;
+  mode: "presenting" | "finished";
 };
 
 type UserMeta = {};
