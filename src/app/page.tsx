@@ -67,7 +67,6 @@ const Component = () => {
   const heartReactions = useStorage((root) => root.heartReactions.length);
   const octopusReactions = useStorage((root) => root.octopusReactions.length);
   const clapReactions = useStorage((root) => root.clapReactions.length);
-  console.log(counts["fire"] / fireReactions);
 
   const broadcast = useBroadcastEvent();
 
