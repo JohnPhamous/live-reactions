@@ -3,12 +3,12 @@
 import {
   RoomProvider,
   useBroadcastEvent,
-  useEventListener,
   useMutation,
   useStorage,
 } from "@/liveblocks.config";
 import { LiveList } from "@liveblocks/client";
 import { useState } from "react";
+import { ClientSideSuspense } from "@liveblocks/react";
 
 const REACTIONS = [
   {
@@ -50,7 +50,9 @@ export default function Home() {
         mode: "presenting",
       }}
     >
-      <Component />
+      <ClientSideSuspense fallback={null}>
+        {() => <Component />}
+      </ClientSideSuspense>
     </RoomProvider>
   );
 }
